@@ -1,15 +1,15 @@
 # Anti-DDoS Python Script
-Simple Python script that will detect timeout, and enable Cloudflare custom WAF rule. This is simple script that was created for peaple that don't really like to have custom Cloudflare WAF alwasy ON.
-Keep in mind that this is my first even created Python script, I don't have any kwnloade how to code, I made this script just for me, but I thought it will be nive thing is share it, maybe there are peaople with similar problem.
+Simple Python script that will detect timeout, and enable Cloudflare custom WAF rule. This is simple script that was created for people that don't really like to have their custom Cloudflare WAF always ON.
+Keep in mind that this is my first even created Python script, I don't have any knowledge how to code, I made this script just for me, but I thought it will be nice thing is share it, maybe there are peaople with similar problem.
 
-Q&A
-Q: What do I need to use it?
-A: Cloudflare free plan, another server to host script with SSH access, and installed python. (You can also host it on same server, but I don't recommend it)
+**Q&A**<br />
+Q: What do I need to use it?<br />
+A: Cloudflare free plan, another server to host script with SSH access, and installed python. (You can also host it on same server, but I don't recommend it)<br />
 
-Q: Is it even working?
-A: Yes, you just need stable hosting provider. If your hosting provider is not too stable, script might trigger itself, without any DDoS attack.
+Q: Is it even working?<br />
+A: Yes, you just need stable hosting provider. If your hosting provider is not too stable, script might trigger itself, without any DDoS attack.<br />
 
-Q: How it works during DDoS attack?
+Q: How it works during DDoS attack?<br />
 A: It will send every second request to detect timeout (default value is 5 seconds), after that script will check if server is up (It will ping server IP). If server is not up it will wait 60min, and start doing everything again.
 If server is up, and there is downtime, it probbaly means that website is under DDoS attack, after that script will use Cloudflare API to update WAF rules, be sure to make own Cloudflare rules! (In code you have example)
 After 60min it will turn off Cloudflare rules, and will start everything again. This script is working for me perfecly, key is fast reaction! If you want you can make own DDoS detection, in my case timeout is perfect since I have stable VPS.
