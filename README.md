@@ -24,6 +24,11 @@ Here we can see that CPU usage was at 100%, during this time website was offline
 ![ddos-not-dead-server](https://github.com/plisskien/anti_ddos_script/assets/29129602/298e7365-918d-41f4-9ce4-c4446b042760)
 Here we can see that CPU usage was at around 30-40%, and during this time site was online, see first screenshot 
 
+![cloudflare-panel](https://github.com/plisskien/anti_ddos_script/assets/29129602/4a410fdd-c9c5-4c0d-8d2a-7ee3c8ff3172)
+Here you can see 'Requests Through Cloudflare' from my dashboard, this second DDoS was smaller, but it was still enough to take down my site
+
 ![discord-logs](https://github.com/plisskien/anti_ddos_script/assets/29129602/b71d13ee-a9ab-4504-96b7-f6716d5369a9)
 Here we can see Discord logs, this is how it looks like
+
+
 
