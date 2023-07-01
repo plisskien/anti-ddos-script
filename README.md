@@ -14,19 +14,19 @@ A: It will send every second request to detect timeout (default value is 5 secon
 If server is up, and there is downtime, it probbaly means that website is under DDoS attack, after that script will use Cloudflare API to update WAF rules, be sure to make own Cloudflare rules! (In code you have example)
 After 60min it will turn off Cloudflare rules, and will start everything again. This script is working for me perfecly, key is fast reaction! If you want you can make own DDoS detection, in my case timeout is perfect since I have stable VPS.
 <br />
-Here you have proof.
+Here you have proof:
 
 ![downtime](https://github.com/plisskien/anti_ddos_script/assets/29129602/bc99f130-a490-4e95-b22c-e40a560950df)
-Here we can see all downtimes, all screenshots will show similar period of time, to show same DDoS attacks
+Here we can see all downtimes, all screenshots will show similar period of time, to show same DDoS attacks<br />
 
 ![ddps-dead-server](https://github.com/plisskien/anti_ddos_script/assets/29129602/7e3b5af8-63d9-40aa-9714-bff44224e5be)
-Here we can see that CPU usage was at 100%, during this time website was offline, see first screenshot
+Here we can see that CPU usage was at 100%, during this time website was offline, see first screenshot<br />
 
 ![ddos-not-dead-server](https://github.com/plisskien/anti_ddos_script/assets/29129602/298e7365-918d-41f4-9ce4-c4446b042760)
-Here we can see that CPU usage was at around 30-40%, and during this time site was online, see first screenshot 
+Here we can see that CPU usage was at around 30-40%, and during this time site was online, see first screenshot<br />
 
 ![cloudflare-panel](https://github.com/plisskien/anti_ddos_script/assets/29129602/4a410fdd-c9c5-4c0d-8d2a-7ee3c8ff3172)
-Here you can see 'Requests Through Cloudflare' from my dashboard, this second DDoS was smaller, but it was still enough to take down my site
+Here you can see 'Requests Through Cloudflare' from my dashboard, this second DDoS was smaller, but it was still enough to take down my site<br />
 
 ![discord-logs](https://github.com/plisskien/anti_ddos_script/assets/29129602/b71d13ee-a9ab-4504-96b7-f6716d5369a9)
 Here we can see Discord logs, this is how it looks like
