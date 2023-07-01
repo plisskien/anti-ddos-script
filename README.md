@@ -1,6 +1,6 @@
 # Anti-DDoS Python Script
 Simple Python script that will detect timeout, and enable Cloudflare custom WAF rule. This is simple script that was created for people that don't really like to have their custom Cloudflare WAF always ON.
-Keep in mind that this is my first even created Python script, I don't have any knowledge how to code, I made this script just for me, but I thought it will be nice thing is share it, maybe there are peaople with similar problem.
+Keep in mind that this is my first even created Python script, I don't have any knowledge how to code, I made this script just for me, but I thought it would be nice thing to share it, maybe there are peaople with similar problem.
 
 **Q&A**<br />
 Q: What do I need to use it?<br />
