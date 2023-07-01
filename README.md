@@ -13,6 +13,7 @@ Q: How it works during DDoS attack?<br />
 A: It will send every second request to detect timeout (default value is 5 seconds), after that script will check if server is up (It will ping server IP). If server is not up it will wait 60min, and start doing everything again.
 If server is up, and there is downtime, it probbaly means that website is under DDoS attack, after that script will use Cloudflare API to update WAF rules, be sure to make own Cloudflare rules! (In code you have example)
 After 60min it will turn off Cloudflare rules, and will start everything again. This script is working for me perfecly, key is fast reaction! If you want you can make own DDoS detection, in my case timeout is perfect since I have stable VPS.
+<br />
 Here you have proof.
 
 ![downtime](https://github.com/plisskien/anti_ddos_script/assets/29129602/bc99f130-a490-4e95-b22c-e40a560950df)
