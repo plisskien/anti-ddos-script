@@ -76,6 +76,7 @@ def ddos():
             turn_off_cloudflare_rule_managed_challenge()
             turn_off_cloudflare_rule_js_challenge()
             send_discord_webhook_logs('🟢 **Starting monitoring again**')
+            send_request()
 
 # We are going to turn ON two rules JS Challenge, and Managed Challenge. (It is better to use two rules if you use more complex expressions, but this is up to you)
 
