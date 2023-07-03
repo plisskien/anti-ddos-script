@@ -44,11 +44,18 @@ def send_request():
             current_time = datetime.now().strftime('%m-%d %H:%M:%S')
             end_time = time.time()  
             response_time = end_time - start_time  
+
+            response_time_formatted = '{:.3f}'.format(response_time)
             
-            send_discord_webhook_logs(f'🏓 Response time: {response_time} seconds, date: {current_time}')
+            send_discord_webhook_logs(f'🏓 Response time: {response_time_formatted} seconds, date: {current_time}')
 
         except Timeout:
             send_discord_webhook_logs('⚠️ Request timed out!')
+            ddos()
+            time.sleep(BREAK_TIME)
+
+        except response.status_code != 200:
+            send_discord_webhook_logs('⚠️ Response not equal to 200!')
             ddos()
             time.sleep(BREAK_TIME)
 
