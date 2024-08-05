@@ -18,19 +18,19 @@ TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID_ALERT = os.getenv('TELEGRAM_CHAT_ID_ALERT')
 TELEGRAM_CHAT_ID_LOGS = os.getenv('TELEGRAM_CHAT_ID_LOGS')
 
-# Cloudflare APIs
-API_URL_JS_CHALLENGE = os.getenv('API_URL_JS_CHALLENGE')
-API_URL_MANAGED_CHALLENGE = os.getenv('API_URL_MANAGED_CHALLENGE')
+# Cloudflare APIs https://developers.cloudflare.com/api/operations/waf-rules-update-a-waf-rule <-everything what you need to know!
+API_URL_JS_CHALLENGE = 'https://api.cloudflare.com/client/v4/zones/ZONE_ID/rulesets/PACKAGE_ID/rules/IDENTIFIER'
+API_URL_MANAGED_CHALLENGE = 'https://api.cloudflare.com/client/v4/zones/ZONE_ID/rulesets/PACKAGE_ID/rules/IDENTIFIER'
 
-# Cloudflare credentials
+# Credentials for Cloudflare, here you can get API KEY -> https://dash.cloudflare.com/profile/api-tokens Use Global API Key!!!, Use Cloudflare email 
 API_EMAIL = os.getenv('CLOUDFLARE_ACCOUNT_EMAIL')
 API_KEY = os.getenv('CLOUDFLARE_GLOBAL_KEY')
 
-URL = os.getenv('WEBSITE_URL')
-IP_SERVER = os.getenv('WEBSITE_SERVER_IP')
-TIMEOUT = 5
-BREAK_TIME = 3600
-DELAY_TIME = 1
+URL = os.getenv('WEBSITE_URL') # Your URL
+IP_SERVER = os.getenv('WEBSITE_SERVER_IP') # To check if server is online, vector that checks if website may have a DDoS attack
+TIMEOUT = 5 # Setup your custom timeout, in my case 5 is perfect, you can use higher timeout if you have crappy hosting (it is important to know which value is not normal, in my case it is 5 seconds, you can make simple script to check it out)
+BREAK_TIME = 3600 # Time between turning on, and off rules in seconds, usually DDoS attack last around 20 minutes, but I prefer to setup 60 min. 
+DELAY_TIME = 1 # Setup delay between requests in seconds, remember too many requests in short time might trigger default Cloudflare WAF
 
 cloudflare_headers = {
     'X-Auth-Email': API_EMAIL,
@@ -39,7 +39,7 @@ cloudflare_headers = {
 }
 
 bypass_key_headers = {
-    "User-Agent": 'secret-user-agent',
+    "User-Agent": 'secret-user-agent', # Custom user agent to bypass Cloudflare WAF (You don't have to use it)
 }
 
 def send_discord_webhook(webhook_url, content):
@@ -72,6 +72,7 @@ def send_log(message):
     send_discord_webhook(DISCORD_WEBHOOK_LOGS, message)
     send_telegram_message(TELEGRAM_CHAT_ID_LOGS, message)
 
+# Timeout checker with info about time response via Discord webhook, I like SPAM
 def send_request():
     while True:
         try:
@@ -95,9 +96,10 @@ def send_request():
             ddos()
             time.sleep(BREAK_TIME)
 
+# Main function that will trigger everything if timeout will be detected 
 def ddos():
     try:
-        ping = ping3.ping(IP_SERVER)
+        ping = ping3.ping(IP_SERVER) # Ping server to check if this is DDoS attack, or just server is dead
         if ping is None:
             raise Exception("Server is not responding to ping")
     except Exception:
@@ -125,11 +127,12 @@ def update_cloudflare_rule(url, payload):
     except RequestException as e:
         send_log(f'❌ Failed to update WAF rule **{payload["description"]}**: {str(e)}')
 
+# We are going to turn ON two rules JS Challenge, and Managed Challenge. (It is better to use two rules if you use more complex expressions, but this is up to you)
 def turn_on_cloudflare_rule_js_challenge():
     payload = {
         "action": "js_challenge",
         "description": "JS Challenge",
-        "expression": "(http.host contains \"example.com\" )"
+        "expression": "(http.host contains \"example.com\" )" # Make own expression, or at least just change example.com to your website
     }
     update_cloudflare_rule(API_URL_JS_CHALLENGE, payload)
 
@@ -137,15 +140,16 @@ def turn_on_cloudflare_rule_managed_challenge():
     payload = {
         "action": "managed_challenge",
         "description": "Managed Challenge",
-        "expression": "(http.host contains \"example.com\" )"
+        "expression": "(http.host contains \"example.com\" )" # Make own expression, or at least just change example.com to your website
     }
     update_cloudflare_rule(API_URL_MANAGED_CHALLENGE, payload)
 
+# You can't just turn OFF Cloudflare role lol, so it is setup in this way that nobody will trigger it, you can delete rule, and create it again, but in my opinion this is simpler option
 def turn_off_cloudflare_rule_js_challenge():
     payload = {
         "action": "js_challenge",
         "description": "JS Challenge",
-        "expression": "(ip.src eq 255.255.255.255)"
+        "expression": "(ip.src eq 255.255.255.255)" # No one will trigger this rule 
     }
     update_cloudflare_rule(API_URL_JS_CHALLENGE, payload)
 
@@ -153,10 +157,11 @@ def turn_off_cloudflare_rule_managed_challenge():
     payload = {
         "action": "managed_challenge",
         "description": "Managed Challenge",
-        "expression": "(ip.src eq 255.255.255.255)"
+        "expression": "(ip.src eq 255.255.255.255)" # No one will trigger this rule 
     }
     update_cloudflare_rule(API_URL_MANAGED_CHALLENGE, payload)
 
+# Alert your users about DDoS attack, message is embedded
 def send_alert_message():
     discord_message = {
         "embeds": [
@@ -179,6 +184,7 @@ def send_alert_message():
     send_discord_webhook(DISCORD_WEBHOOK_ALERT, json.dumps(discord_message))
     send_telegram_message(TELEGRAM_CHAT_ID_ALERT, telegram_message)
 
+# Everythings is in loop with extra alerts if something is not ok Discord webhook/text in console
 if __name__ == '__main__':
     while True:
         try:
