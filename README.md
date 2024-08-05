@@ -7,6 +7,7 @@ This is a simple Python script designed to detect timeouts and enable Cloudflare
 - Cloudflare free plan
 - Another server with SSH access to host the script
 - Python installed on the server (you can also host it on the same server, but it's not recommended)
+- Installed **requests** and **ping3** on server with Python
 
 ## FAQ
 
